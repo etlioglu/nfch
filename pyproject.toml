@@ -1,0 +1,16 @@
+[project]
+name = "nfch"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [{ name = "H. Emre Etlioglu", email = "emre.etlioglu@gmail.com" }]
+requires-python = ">=3.10"
+dependencies = ["typer>=0.15.2"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["ERA"]
