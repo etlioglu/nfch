@@ -1,3 +1,5 @@
+"""app for project initiation."""
+
 import typer
 
 from nfch.project_init.project_init import app as project_app
