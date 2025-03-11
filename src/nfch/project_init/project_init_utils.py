@@ -7,7 +7,7 @@ from nfch import utils
 
 
 def under_version_control() -> bool:
-    """Check if the working directory is under version control.
+    """Check if the working/project directory is under version control.
 
     Returns
     -------
