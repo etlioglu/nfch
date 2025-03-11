@@ -44,8 +44,8 @@ def dict_to_json(dictionary: dict[str, str], file: Path) -> None:
 def _format_message(message: str) -> str:
     """Format messages.
 
-    "textwrap.dedent" is used for strings with triple quotes and "str.strip()"
-    removes leading and trailing new lines (technically all whitespaces).
+    "textwrap.dedent" is used for strings with triple quotes and "str.strip()" removes leading and trailing new lines
+    (technically all whitespaces).
 
     Parameters
     ----------
