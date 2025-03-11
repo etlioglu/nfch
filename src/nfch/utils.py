@@ -119,3 +119,5 @@ def info(message: str) -> None:
 
     """
     rich_print(f"\n[yellow]{_format_message(message)}[yellow]")
+
+print("This is a very very very very very very very very very very very very very very very very very very very very very very very very long line")
