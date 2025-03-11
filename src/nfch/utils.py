@@ -7,10 +7,6 @@ from pathlib import Path
 from rich import print as rich_print
 
 
-def test() -> None:
-    """A very very very very very very very very very very very very very very very very very very very long doc."""
-
-
 def json_to_dict(file: Path) -> dict[str, str]:
     """Convert a json file to a dict.
 
