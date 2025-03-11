@@ -9,13 +9,13 @@ repos:
       - id: debug-statements
         language_version: python3
 
-  # - repo: https://github.com/astral-sh/ruff-pre-commit
-  #   # Ruff version.
-  #   rev: v0.9.10
-  #   hooks:
-  #     # Run the linter.
-  #     - id: ruff
-  #       args: ["--config=./pyproject.toml"]
-  #     # Run the formatter.
-  #     - id: ruff-format
-  #       args: ["--config=./pyproject.toml"]
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Ruff version.
+    rev: v0.9.10
+    hooks:
+      # Run the linter.
+      - id: ruff
+        args: [--config=./pyproject.toml]
+      # Run the formatter.
+      - id: ruff-format
+        args: [--config=./pyproject.toml]
