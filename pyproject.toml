@@ -11,6 +11,9 @@ dependencies = ["typer>=0.15.2"]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.ruff]
+line-length = 120
+
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = ["ERA"]

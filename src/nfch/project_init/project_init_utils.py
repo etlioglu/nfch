@@ -27,7 +27,10 @@ def under_version_control() -> bool:
     return False
 
 
-def create_settings(email: str | None = None, genomes_json: str | None = None) -> None:
+def create_settings(
+    email: str | None = None,
+    genomes_json: str | None = None,
+) -> None:
     """Create a settings folder, ".nfch", within the project directory (if not present) and store settings there.
 
     Parameters
@@ -43,7 +46,9 @@ def create_settings(email: str | None = None, genomes_json: str | None = None) -
     try:
         settings_folder.mkdir()
     except FileExistsError:
-        utils.warning(message=f'Folder "{settings_folder}" already exists.')
+        utils.warning(
+            message=f'Folder "{settings_folder}" already exists.',
+        )
 
     # a dict is used in case new setting types will be introduced in the future
     new_settings: dict[str, str] = {}
@@ -59,27 +64,38 @@ def create_settings(email: str | None = None, genomes_json: str | None = None) -
         Tip: "nfch project settings" will show existing information about the current project.
         """
         utils.warning(message=long_message)
-        old_settings: dict[str, str] = utils.json_to_dict(file=settings_file)
+        old_settings: dict[str, str] = utils.json_to_dict(
+            file=settings_file,
+        )
         old_settings.update(new_settings)
-        utils.dict_to_json(dictionary=old_settings, file=settings_file)
+        utils.dict_to_json(
+            dictionary=old_settings,
+            file=settings_file,
+        )
     else:
-        utils.processing(message=f"Creating {settings_file}...")
-        utils.dict_to_json(dictionary=new_settings, file=settings_file)
+        utils.processing(
+            message=f"Creating {settings_file}...",
+        )
+        utils.dict_to_json(
+            dictionary=new_settings,
+            file=settings_file,
+        )
 
     # json file containing genome related info: fasta, gtf, index
     if genomes_json:
         genomes_json_src_path: Path = Path(genomes_json)
         if not genomes_json_src_path.exists():
             utils.fail(
-                message=f'"{genomes_json_src_path}" does not seem to be a valid path!'
+                message=f'"{genomes_json_src_path}" does not seem to be a valid path!',
             )
         else:
             genomes_json_dst_path: Path = settings_folder / "genomes.json"
             if genomes_json_dst_path.exists():
-                utils.warning(
-                    message=f'"{genomes_json_dst_path}" exists already and will be overwritten!'
-                )
+                utils.warning(message=f'"{genomes_json_dst_path}" exists already and will be overwritten!')
             utils.processing(
                 message=f'"{genomes_json_src_path}" is being copied into "{genomes_json_dst_path.parent}"...',
             )
-            shutil.copy(src=genomes_json_src_path, dst=genomes_json_dst_path)
+            shutil.copy(
+                src=genomes_json_src_path,
+                dst=genomes_json_dst_path,
+            )
