@@ -21,7 +21,7 @@ def json_to_dict(file: Path) -> dict[str, str]:
         dict
 
     """
-    with Path.open(self=file, encoding="utf-8") as json_file:
+    with Path(file).open(encoding="utf-8") as json_file:
         data: dict[str, str] = json.load(fp=json_file)
     return data
 
