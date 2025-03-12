@@ -2,12 +2,13 @@
 
 import json
 import textwrap
+import typing
 from pathlib import Path
 
 from rich import print as rich_print
 
 
-def json_to_dict(file: Path) -> dict[str, str]:
+def json_to_dict(file: Path) -> dict[str, typing.Any]:
     """Convert a json file to a dict.
 
     Parameters
