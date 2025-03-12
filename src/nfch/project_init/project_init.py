@@ -55,7 +55,12 @@ def init(
 ) -> None:
     """Initiate project, track user, available genomes, ..."""
     pu.under_version_control()
-    pu.create_settings(email=email, genomes_json=genomes_json)
+    pu.create_settings_folder()
+    if email:
+        pu.create_settings_file(email=email)
+    if genomes_json:
+        utils.processing(message=f"Validating the supplied {genomes_json} file...")
+        pu.copy_genomes_json(genomes_json=genomes_json)
 
 
 @app.command()
