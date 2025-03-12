@@ -1,4 +1,4 @@
-"""app for project initiation."""
+"""Presents the typer app serving as the "project" sub-command to take care of project initiation."""
 
 import typer
 
