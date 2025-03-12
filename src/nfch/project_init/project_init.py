@@ -59,7 +59,7 @@ def init(
     if email:
         pu.create_settings_file(email=email)
     if genomes_json:
-        utils.processing(message=f"Validating the supplied {genomes_json} file...")
+        utils.processing(message=f'Validating the supplied "{genomes_json}" file...')
         pu.copy_genomes_json(genomes_json=genomes_json)
 
 

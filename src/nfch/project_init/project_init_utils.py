@@ -18,11 +18,11 @@ def under_version_control() -> bool:
     """
     git_folder: Path = Path(".git")
     if git_folder.is_dir():
-        utils.success(message="The project folder seems to be under git version control")
+        utils.success(message="The project folder seems to be under git version control.")
         return True
     utils.warning(
         message="The project folder does not seem to be under revision control, this is advised for repoducibility"
-        "but not forced",
+        "but not forced.",
     )
     return False
 
@@ -64,12 +64,12 @@ def create_settings_file(email: str | None = None) -> None:
     # settings
     settings_file: Path = Path(".nfch/settings.json")
     if settings_file.exists():
-        long_message: str = f"""
-        File "{settings_file}" already exists, information provided with "nfch project init" will be added to this file
-        if not already present or will be overridden otherwise!
-        Tip: "nfch project settings" will show existing information about the current project.
-        """
-        utils.warning(message=long_message)
+        utils.warning(
+            message=f'File "{settings_file}" already exists, information provided with "nfch project init" will'
+            "be added to this file if not already present or will be overridden otherwise!"
+            'Tip: "nfch project settings" will show existing information about the current project.',
+        )
+
         old_settings: dict[str, str] = utils.json_to_dict(
             file=settings_file,
         )
