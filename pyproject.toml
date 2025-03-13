@@ -16,4 +16,4 @@ line-length = 120
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["ERA"]
+ignore = ["ERA", "TD002"]
