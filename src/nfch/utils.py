@@ -1,6 +1,7 @@
 """The module contains some utility functions used by all the submodules."""
 
 import json
+import sys
 import textwrap
 import typing
 from pathlib import Path
@@ -120,3 +121,23 @@ def info(message: str) -> None:
 
     """
     rich_print(f"\n[yellow]{_format_message(message)}[yellow]")
+
+
+def create_folder(path: Path) -> None:
+    """Create a folder.
+
+    Parameters
+    ----------
+    path : Path
+        Path to the file/folder of interest
+
+    """
+    try:
+        path.mkdir()
+        success(message=f'Directory "{path}" created successfully.')
+    except FileExistsError:
+        fail(message=f'Directory "{path}" already exists, aborting! You can remove or rename "{path}" and try again.')
+        sys.exit()
+    except PermissionError:
+        fail(message=f'Directory "{path.parent}" is not writable, aborting!')
+        sys.exit()
