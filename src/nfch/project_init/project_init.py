@@ -1,11 +1,12 @@
 """Initiates a project that will be using nfcore pipelines."""
 
+from pathlib import Path
 from typing import Annotated
 
 import typer
 
-import nfch.project_init.project_init_utils as pu
 from nfch import utils
+from nfch.proj import Project
 
 app = typer.Typer()
 
@@ -37,7 +38,7 @@ def prerequisites() -> None:
     3- secuing raw data after checksum
     4- meta data to the Teams channel
     """
-    utils.info(extras)
+    utils.info(message=extras)
 
 
 @app.command()
@@ -49,18 +50,12 @@ def init(
         ),
     ] = None,
     genomes_json: Annotated[
-        str | None,
+        Path | None,
         typer.Option(help="Path to the json file containing genome information."),
     ] = None,
 ) -> None:
     """Initiate project, track user, available genomes, ..."""
-    pu.under_version_control()
-    pu.create_settings_folder()
-    if email:
-        pu.create_settings_file(email=email)
-    if genomes_json:
-        utils.processing(message=f'Validating the supplied "{genomes_json}" file...')
-        pu.copy_genomes_json(genomes_json=genomes_json)
+    Project(email=email, genomes_json=genomes_json)
 
 
 @app.command()
