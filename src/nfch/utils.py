@@ -3,19 +3,19 @@
 import json
 import sys
 import textwrap
-import typing
 from pathlib import Path
+from typing import Any
 
 from rich import print as rich_print
 
 
-def json_to_dict(file: Path) -> dict[str, typing.Any]:
+def json_to_dict(file_path: Path) -> dict[str, Any]:
     """Convert a json file to a dict.
 
     Parameters
     ----------
-    file : Path
-        file path
+    file_path : Path
+        File path
 
     Returns
     -------
@@ -23,24 +23,32 @@ def json_to_dict(file: Path) -> dict[str, typing.Any]:
         dict
 
     """
-    with Path(file).open(encoding="utf-8") as json_file:
-        data: dict[str, str] = json.load(fp=json_file)
+    try:
+        with file_path.open(mode="r", encoding="utf-8") as json_file:
+            data: dict[str, Any] = json.load(fp=json_file)
+    except FileNotFoundError:
+        fail(message=f'File "{file_path}" not found, aborting!')
+        sys.exit()
     return data
 
 
-def dict_to_json(dictionary: dict[str, str], file: Path) -> None:
+def dict_to_json(dictionary: dict[str, Any], file_path: Path) -> None:
     """Write a dict into a json file.
 
     Parameters
     ----------
     dictionary : dict[str, str]
         dict
-    file : Path
-        file path
+    file_path : Path
+        File path
 
     """
-    with Path.open(self=file, mode="w", encoding="utf-8") as json_file:
-        json.dump(obj=dictionary, fp=json_file, indent=2)
+    try:
+        with file_path.open(mode="w", encoding="utf-8") as json_file:
+            json.dump(obj=dictionary, fp=json_file, indent=2)
+    except PermissionError:
+        fail(message=f'"{file_path}" is not writable, aborting!')
+        sys.exit()
 
 
 def _format_message(message: str) -> str:
@@ -123,21 +131,44 @@ def info(message: str) -> None:
     rich_print(f"\n[yellow]{_format_message(message)}[yellow]")
 
 
-def create_folder(path: Path) -> None:
+def create_folder(folder_path: Path) -> None:
     """Create a folder.
 
     Parameters
     ----------
-    path : Path
-        Path to the file/folder of interest
+    folder_path : Path
+        Path to the folder of interest
 
     """
     try:
-        path.mkdir()
-        success(message=f'Directory "{path}" created successfully.')
+        folder_path.mkdir()
+        success(message=f'Directory "{folder_path}" created successfully.')
     except FileExistsError:
-        fail(message=f'Directory "{path}" already exists, aborting! You can remove or rename "{path}" and try again.')
+        fail(
+            message=f'Directory "{folder_path}" already exists, aborting! You can remove or rename "{folder_path}"'
+            "and try again.",
+        )
         sys.exit()
     except PermissionError:
-        fail(message=f'Directory "{path.parent}" is not writable, aborting!')
+        fail(message=f'Directory "{folder_path.parent}" is not writable, aborting!')
         sys.exit()
+
+
+def string_to_textfile(text: str, file_path: Path) -> None:
+    """Write a string to a text file.
+
+    Parameters
+    ----------
+    text : str
+        Text
+    file_path : Path
+        File path
+
+    """
+    try:
+        with file_path.open(mode="w", encoding="utf-8") as text_file:
+            text_file.write(text)
+    except PermissionError:
+        fail(message=f'"{file_path}" is not writable, aborting!')
+        sys.exit()
+    success(message=f'File "{file_path}" has been created successfully.')
