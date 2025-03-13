@@ -9,6 +9,25 @@ from typing import Any
 from rich import print as rich_print
 
 
+def dict_to_json(dictionary: dict[str, Any], file_path: Path) -> None:
+    """Write a dict into a json file.
+
+    Parameters
+    ----------
+    dictionary : dict[str, str]
+        dict
+    file_path : Path
+        File path
+
+    """
+    try:
+        with file_path.open(mode="w", encoding="utf-8") as json_file:
+            json.dump(obj=dictionary, fp=json_file, indent=2)
+    except PermissionError:
+        fail(message=f'"{file_path}" is not writable, aborting!')
+        sys.exit()
+
+
 def json_to_dict(file_path: Path) -> dict[str, Any]:
     """Convert a json file to a dict.
 
@@ -30,25 +49,6 @@ def json_to_dict(file_path: Path) -> dict[str, Any]:
         fail(message=f'File "{file_path}" not found, aborting!')
         sys.exit()
     return data
-
-
-def dict_to_json(dictionary: dict[str, Any], file_path: Path) -> None:
-    """Write a dict into a json file.
-
-    Parameters
-    ----------
-    dictionary : dict[str, str]
-        dict
-    file_path : Path
-        File path
-
-    """
-    try:
-        with file_path.open(mode="w", encoding="utf-8") as json_file:
-            json.dump(obj=dictionary, fp=json_file, indent=2)
-    except PermissionError:
-        fail(message=f'"{file_path}" is not writable, aborting!')
-        sys.exit()
 
 
 def _format_message(message: str) -> str:
