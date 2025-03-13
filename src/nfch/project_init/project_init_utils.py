@@ -112,7 +112,7 @@ def _genome_paths_ok(genomes_json: Path) -> bool:
             else:
                 utils.fail(message=f'"{file_path}" does not seem to be a valid path for {file_type} of {genome_build}!')
                 return False
-    utils.success("All existing paths within the genomes.json are valid.")
+    utils.success(message="All existing paths within the genomes.json are valid.")
     return True
 
 
