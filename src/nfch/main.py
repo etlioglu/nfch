@@ -1,7 +1,11 @@
 """Documentation to be added.
 
-/home/eetlioglu/analyses/emre-etlioglu/nfch/src/nfch
-uv run --active main.py --help
+run from project directory's top level
+uv run --active src/nfch/main.py --help
+
+Resources:
+https://sarahglasmacher.com/how-to-build-python-package-uv/
+https://www.datacamp.com/tutorial/python-uv
 """
 
 import typer
