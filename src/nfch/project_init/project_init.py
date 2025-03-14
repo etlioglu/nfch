@@ -27,7 +27,7 @@ def prerequisites() -> None:
     three = """
     3- Initiation of the project is accomplished via the command "nfch project init" and it expects an optional
     parameter "genomes.json", listing available genomes. If not supplied, you will need to manually enter this
-    information in the"nf_params.json" file once created by this tool.
+    information in the "nf_params.json" file once created by this tool.
     """
     utils.info(message=three)
 
