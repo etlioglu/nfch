@@ -3,7 +3,7 @@
 import textwrap
 from pathlib import Path
 
-import utils
+from nfch import utils
 
 
 class Workflow:
@@ -39,6 +39,39 @@ class Workflow:
         # create subfolder for the output
         utils.create_folder(folder_path=self.output_folder)
 
+    def create_nextflow_command(self, revision: str, profile: str = "docker") -> None:
+        """Create a Nextflow command file within the run folder.
+
+        Parameters
+        ----------
+        revision : str, optional
+            Pipeline version, by default "3.18.0"
+        profile : str, optional
+            Nextflow profile, by default "docker"
+
+        """
+        formal_wf_names: dict[str, str] = {
+            "nfcore_rnaseq": r"nfcore/rnaseq",
+            "nfcore_diffabun": r"nfcore/differentialabundance",
+        }
+
+        file_path: Path = self.run_folder / "nextflow_command.txt"
+        utils.processing(message=f'Creating the Nextflow command within "{file_path}"...')
+
+        nextflow_command: str = textwrap.dedent(
+            text=f"""
+        nohup nextflow run {formal_wf_names[self.name]} \\
+            -revision {revision} \\
+            -profile {profile} \\
+            -resume \\
+            -params-file nf_params.json \\
+        > nohup-nextflow.out \\
+        2> nohup-nextflow.err
+        """,
+        )
+
+        utils.string_to_textfile(text=nextflow_command, file_path=file_path)
+
 
 class RNASeq(Workflow):
     """A class representing nfcore/rnaseq workflows."""
@@ -60,34 +93,6 @@ class RNASeq(Workflow):
         self.create_nextflow_command(revision=revision)
         self.create_nf_params(genome_build=genome_build)
 
-    def create_nextflow_command(self, revision: str, profile: str = "docker") -> None:
-        """Create a Nextflow command file within the run folder.
-
-        Parameters
-        ----------
-        revision : str, optional
-            Pipeline version, by default "3.18.0"
-        profile : str, optional
-            Nextflow profile, by default "docker"
-
-        """
-        file_path: Path = self.run_folder / "nextflow_command.txt"
-        utils.processing(message=f'Creating the Nextflow command within "{file_path}"...')
-
-        nextflow_command: str = textwrap.dedent(
-            text=f"""
-        nohup nextflow run nf-core/rnaseq \\
-            -revision {revision} \\
-            -profile {profile} \\
-            -resume \\
-            -params-file nf_params.json \\
-        > nohup-nextflow.out \\
-        2> nohup-nextflow.err
-        """,
-        )
-
-        utils.string_to_textfile(text=nextflow_command, file_path=file_path)
-
     def create_nf_params(self, genome_build: str) -> None:
         """Create a Nextflow settings file within the run folder.
 
@@ -99,18 +104,29 @@ class RNASeq(Workflow):
         """
         project_settings: dict[str, str] = utils.json_to_dict(file_path=Path(".nfch/settings.json"))
         genomes: dict[str, dict[str, str]] = utils.json_to_dict(file_path=Path(".nfch/genomes.json"))
-        run_settings: dict[str, str | bool] = {
+        run_settings: dict[str, str | bool | Path] = {
             "input": "samplesheet.csv",
             "outdir": "../output",
             "email": project_settings["email"],
             "extra_salmon_quant_args": "--gcBias",
-            "save_reference": "true",
+            "fasta": genomes[genome_build]["fasta"],
+            "gtf": genomes[genome_build]["gtf"],
         }
         if genomes[genome_build]["nfcore_rnaseq_index"]:
             # use the genome indexes if present and turn off the save_reference flag
-            pass
+            nfcore_rnaseq_index_path: Path = Path(genomes[genome_build]["nfcore_rnaseq_index"])
+            run_settings["save_reference"] = False
+            run_settings["star_index"] = str(object=nfcore_rnaseq_index_path / "index" / "star")
+            run_settings["salmon_index"] = str(object=nfcore_rnaseq_index_path / "index" / "salmon")
+            run_settings["gene_bed"] = str(object=next(nfcore_rnaseq_index_path.glob(pattern="*.bed")))
         else:
-            run_settings["fasta"] = genomes[genome_build]["fasta"]
-            run_settings["gtf"] = genomes[genome_build]["gtf"]
             run_settings["save_reference"] = True
+            utils.warning(
+                message="Do not forget to transfer the generated genome indexes to the appropriate location with"
+                "something like 'rsync -ahr --progress genome /home/eetlioglu/references/GRCh38_Ensembl/release_113/'",
+            )
         utils.dict_to_json(dictionary=run_settings, file_path=self.nf_settings)
+
+
+class DiffAbun(Workflow):
+    """To be implemented."""
