@@ -3,7 +3,8 @@
 from typing import Annotated
 
 import typer
-from workflow import RNASeq
+
+from nfch.workflow import RNASeq
 
 app = typer.Typer()
 
@@ -34,4 +35,4 @@ def prepare(
         "GRCh38_Ensembl_release_113"
 
     """
-    RNASeq(name="nfcore_rnaseq", revision=revision, genome_build=genome_build)
+    RNASeq(revision=revision, genome_build=genome_build)

@@ -21,7 +21,7 @@ app: typer.Typer = typer.Typer()
 
 app.add_typer(typer_instance=project_app, name="project")
 app.add_typer(typer_instance=rnaseq_app, name="rnaseq")
-app.add_typer(typer_instance=diffabun_app, name="differentialabundance")
+app.add_typer(typer_instance=diffabun_app, name="diffabun")
 
 
 if __name__ == "__main__":

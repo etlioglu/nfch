@@ -4,7 +4,7 @@ import shutil
 import sys
 from pathlib import Path
 
-import utils
+from nfch import utils
 
 
 class Project:

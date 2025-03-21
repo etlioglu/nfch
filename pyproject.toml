@@ -11,6 +11,10 @@ dependencies = ["typer>=0.15.2"]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[project.scripts]
+nfch = "nfch.main:app"
+
+
 [tool.ruff]
 line-length = 120
 
