@@ -9,17 +9,17 @@ from nfch import utils
 class Workflow:
     """A class representing generic workflows."""
 
-    # Add the clean functionality
-
     def __init__(self, wf_name: str, revision: str, wf_folder: Path) -> None:
         """Instantiate the generic Workflow object and create the necessary folders.
 
         Parameters
         ----------
-        wf_name : str | None, optional
-            _description_, by default None
-        wf_folder : Path | None, optional
-            _description_, by default None
+        wf_name : str
+            Name of the Nextflow nfcore workflow
+        revision : str
+            Version of the Nextflow nfcore workflow
+        wf_folder : Path
+            Name of the folder to contain all workflow related stuff
 
         """
         self.wf_name: str = wf_name
@@ -81,22 +81,23 @@ class Workflow:
 class RNASeq(Workflow):
     """A class representing nfcore/rnaseq workflows."""
 
+    wf_name: str = r"nf-core/rnaseq"
+    wf_folder: Path = Path("nfcore_rnaseq")
+
     def __init__(self, revision: str, genome_build: str) -> None:
-        """Instantiate the RNASeq object and create the nfcore/rnaseq specific command and settings files.
+        """Create an istance of the RNASeq class.
 
         Parameters
         ----------
-        name : str
-            Workflow name, used by the parent class' init method
         revision : str
-            Version of the nfcore/rnaseq pipeline
+            Version of the nfcore/differentialabundance pipeline_
         genome_build : str
-            Genome build of interest, should match the genome key in the genomes.json file
+            Genome build of choice, should match one of the keys in the "genomes.json"
 
         """
         self.genome_build: str = genome_build
 
-        super().__init__(wf_name=r"nf-core/rnaseq", revision=revision, wf_folder=Path("nfcore_rnaseq"))
+        super().__init__(wf_name=RNASeq.wf_name, revision=revision, wf_folder=RNASeq.wf_folder)
         super().create_nextflow_command(profile="docker")
         self.create_nf_params()
 
@@ -133,16 +134,35 @@ class RNASeq(Workflow):
 class DiffAbun(Workflow):
     """To be implemented."""
 
-    def __init__(self, revision: str, genome_build: str) -> None:
+    wf_name: str = r"nf-core/differentialabundance"
+    wf_folder: Path = Path("nfcore_differentialabundance")
+
+    def __init__(self, revision: str) -> None:
+        """Create an istance of the DiffAbun class.
+
+        Parameters
+        ----------
+        revision : str
+            Version of the nfcore/differentialabundance pipeline
+
+        """
         super().__init__(
-            wf_name=r"nf-core/differentialabundance",
+            wf_name=DiffAbun.wf_name,
             revision=revision,
-            wf_folder=Path("nfcore_differentialabundance"),
+            wf_folder=DiffAbun.wf_folder,
         )
         super().create_nextflow_command(profile="rnaseq,docker")
         self.create_nf_params()
 
     def create_nf_params(self, organism: str = "human") -> None:
+        """Create a parameters file for a nfcore/differentialabundance run.
+
+        Parameters
+        ----------
+        organism : str, optional
+            Species/organism of interest, by default "human"
+
+        """
         nfcore_rnaseq_params: dict[str, str | bool] = utils.json_to_dict(
             file_path=Path("nfcore_rnaseq/run/nf_params.json"),
         )
