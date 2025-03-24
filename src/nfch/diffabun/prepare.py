@@ -36,7 +36,7 @@ def prepare(
         Genome build of interest, used to provide the right annotation for the "--gtf" parameter
 
     """
-    diff_abun: DiffAbun = DiffAbun(revision=revision, genome_build=genome_build)
+    diff_abun: DiffAbun = DiffAbun(revision=revision)
     diff_abun_dict: dict[str, str] = {"revision": diff_abun.revision, genome_build: "test"}
 
     settings_file: str = "diff_abun.json"
