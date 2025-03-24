@@ -5,7 +5,10 @@ description = "Add your description here"
 readme = "README.md"
 authors = [{ name = "H. Emre Etlioglu", email = "emre.etlioglu@gmail.com" }]
 requires-python = ">=3.10"
-dependencies = ["typer>=0.15.2"]
+dependencies = [
+    "pytest>=8.3.5",
+    "typer>=0.15.2",
+]
 
 [build-system]
 requires = ["hatchling"]
