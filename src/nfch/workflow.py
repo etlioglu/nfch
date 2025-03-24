@@ -4,6 +4,7 @@ import textwrap
 from pathlib import Path
 
 from nfch import utils
+from nfch.message_manager import MessageManager
 
 
 class Workflow:
@@ -61,7 +62,7 @@ class Workflow:
 
         """
         file_path: Path = self.run_folder / "nextflow_command.txt"
-        utils.processing(message=f'Creating the Nextflow command within "{file_path}"...')
+        MessageManager.processing(message=f'Creating the Nextflow command within "{file_path}"...')
 
         nextflow_command: str = textwrap.dedent(
             text=f"""
@@ -124,7 +125,7 @@ class RNASeq(Workflow):
             self.run_settings["gene_bed"] = str(object=next(nfcore_rnaseq_index_path.glob(pattern="*.bed")))
         else:
             self.run_settings["save_reference"] = True
-            utils.warning(
+            MessageManager.warning(
                 message="Do not forget to transfer the generated genome indexes to the appropriate location with"
                 "something like 'rsync -ahr --progress genome /home/eetlioglu/references/GRCh38_Ensembl/release_113/'",
             )
