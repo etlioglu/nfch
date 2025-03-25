@@ -18,19 +18,19 @@ class MessageManager:
         Parameters
         ----------
         message : str
-            message to be printed
+            Message to be printed
 
         Returns
         -------
         str
-            formatted message
+            Formatted message
 
         """
-        return str.strip(textwrap.dedent(text=message))
+        return textwrap.dedent(text=message).strip()
 
     @staticmethod
     def processing(message: str) -> None:
-        """Print formatted message.
+        """Print the provided text message in blue.
 
         Parameters
         ----------
@@ -42,7 +42,7 @@ class MessageManager:
 
     @staticmethod
     def success(message: str) -> None:
-        """Print formatted message.
+        """Print the provided text message in green.
 
         Parameters
         ----------
@@ -54,7 +54,7 @@ class MessageManager:
 
     @staticmethod
     def warning(message: str) -> None:
-        """Print formatted message.
+        """Print the provided text message in orange.
 
         Parameters
         ----------
@@ -66,7 +66,7 @@ class MessageManager:
 
     @staticmethod
     def fail(message: str) -> None:
-        """Print formatted message.
+        """Print the provided text message in red.
 
         Parameters
         ----------
@@ -78,7 +78,7 @@ class MessageManager:
 
     @staticmethod
     def info(message: str) -> None:
-        """Print formatted message.
+        """Print the provided text message in yellow.
 
         Parameters
         ----------
