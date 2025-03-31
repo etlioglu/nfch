@@ -1,7 +1,5 @@
 """Module contatining the class MessageManager managing colored output messages."""
 
-import textwrap
-
 from rich import print as rich_print
 
 
@@ -9,81 +7,34 @@ class MessageManager:
     """A utility class for printing colored messages."""
 
     @staticmethod
-    def _format_message(message: str) -> str:
-        """Format messages.
-
-        "textwrap.dedent" is used for strings with triple quotes and "str.strip()" removes leading and trailing new
-        lines (technically all whitespaces).
+    def echo(message: str, message_type: str = "info", level: int = 0) -> None:
+        """Print a colored and optionally indented message based on message type.
 
         Parameters
         ----------
         message : str
-            Message to be printed
-
-        Returns
-        -------
-        str
-            Formatted message
-
-        """
-        return textwrap.dedent(text=message).strip()
-
-    @staticmethod
-    def processing(message: str) -> None:
-        """Print the provided text message in blue.
-
-        Parameters
-        ----------
-        message : str
-            str
+            Text message to be printed
+        message_type : str, optional
+            One of five types; info (yellow), process (blue), success (green), warning (orange) and fail (red), by
+            default "info"
+        level : int, optional
+            The larger the level the more indented is the message, by default 0
 
         """
-        rich_print(f"\n[blue]{MessageManager._format_message(message=message)}[blue]")
+        colors: dict[str, str] = {
+            "info": "[yellow]",
+            "process": "[blue]",
+            "success": "[green]",
+            "warning": "[orange1]",
+            "fail": "[red]",
+        }
+        new_line: str = "\n"
+        color: str = colors[message_type]
+        indentation: str = ""
+        emoticon: str = ""
+        if level != 0:
+            new_line = ""
+            indentation: str = " " * level
+            emoticon = ":arrow_right_hook: "
 
-    @staticmethod
-    def success(message: str) -> None:
-        """Print the provided text message in green.
-
-        Parameters
-        ----------
-        message : str
-            str
-
-        """
-        rich_print(f"\n[green]{MessageManager._format_message(message=message)}[green]")
-
-    @staticmethod
-    def warning(message: str) -> None:
-        """Print the provided text message in orange.
-
-        Parameters
-        ----------
-        message : str
-            str
-
-        """
-        rich_print(f"\n[orange1]{MessageManager._format_message(message=message)}[orange1]")
-
-    @staticmethod
-    def fail(message: str) -> None:
-        """Print the provided text message in red.
-
-        Parameters
-        ----------
-        message : str
-            str
-
-        """
-        rich_print(f"\n[red]{MessageManager._format_message(message=message)}[red]")
-
-    @staticmethod
-    def info(message: str) -> None:
-        """Print the provided text message in yellow.
-
-        Parameters
-        ----------
-        message : str
-            str
-
-        """
-        rich_print(f"\n[yellow]{MessageManager._format_message(message=message)}[yellow]")
+        rich_print(f"{new_line}{color}{indentation + emoticon + message}{color}")
